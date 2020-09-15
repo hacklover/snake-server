@@ -4,6 +4,8 @@ import {ControlsModule} from "../controls/controls.module";
 import {DemocracyModule} from "../democracy/democracy.module";
 import {SnakeModule} from "../snake/snake.module";
 import {StatsModule} from "../stats/stats.module";
+import {PlayersModule} from "../players/players.module";
+import { MovesAutomaticService } from './moves-automatic/moves-automatic.service';
 
 @Module({
   imports:[
@@ -11,8 +13,9 @@ import {StatsModule} from "../stats/stats.module";
     forwardRef(() => DemocracyModule),
     forwardRef(() => SnakeModule),
     forwardRef(() => StatsModule),
+    forwardRef(() => PlayersModule),
   ],
-  providers: [MovesService],
-  exports: [MovesService]
+  providers: [MovesService, MovesAutomaticService],
+  exports: [MovesService,MovesAutomaticService]
 })
 export class MovesModule {}

@@ -1,22 +1,22 @@
-import {Module, Global} from '@nestjs/common';
+import {Module, Global, forwardRef} from '@nestjs/common';
 import { GameService } from './game.service';
 import {GameInactiveService} from "./game-inactive.service";
 import {ControlsModule} from "../controls/controls.module";
 import {DemocracyModule} from "../democracy/democracy.module";
 import {GoodiesModule} from "../goodies/goodies.module";
-import {MovesModule} from "../moves/moves.module";
 import {SnakeModule} from "../snake/snake.module";
 import {StatsModule} from "../stats/stats.module";
+import {MovesModule} from "../moves/moves.module";
 
 @Global()
 @Module({
   imports: [
-    GoodiesModule,
-    ControlsModule,
-    DemocracyModule,
-    MovesModule,
-    SnakeModule,
-    StatsModule
+    forwardRef(() => GoodiesModule),
+    forwardRef(() => ControlsModule),
+    forwardRef(() => DemocracyModule),
+    forwardRef(() => MovesModule),
+    forwardRef(() => SnakeModule),
+    forwardRef(() => StatsModule),
   ],
   providers: [GameService,GameInactiveService],
   exports: [GameService,GameInactiveService]

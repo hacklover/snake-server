@@ -1,19 +1,21 @@
-import {Module} from '@nestjs/common';
+import {forwardRef, Global, Module} from '@nestjs/common';
 import { SnakeService } from './snake.service';
 import {ControlsModule} from "../controls/controls.module";
 import {DemocracyModule} from "../democracy/democracy.module";
 import {GoodiesModule} from "../goodies/goodies.module";
 import {StatsModule} from "../stats/stats.module";
+import { SnakeKeepAssDistanceService } from './snake-keep-ass-distance/snake-keep-ass-distance.service';
 
+@Global()
 @Module({
   imports: [
-    GoodiesModule,
-    ControlsModule,
-    DemocracyModule,
-    StatsModule
+    forwardRef(() => GoodiesModule),
+    forwardRef(() => ControlsModule),
+    forwardRef(() => DemocracyModule),
+    forwardRef(() => StatsModule),
   ],
-  providers: [SnakeService],
-  exports: [SnakeService],
+  providers: [SnakeService, SnakeKeepAssDistanceService],
+  exports: [SnakeService, SnakeKeepAssDistanceService],
 })
 
 export class SnakeModule {

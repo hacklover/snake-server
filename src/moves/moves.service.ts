@@ -1,72 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import {Global, Injectable} from '@nestjs/common';
 import {SnakeService} from "../snake/snake.service";
 import {ControlsService} from "../controls/controls.service";
 import {StatsService} from "../stats/stats.service";
 import {DemocracyService} from "../democracy/democracy.service";
-import {StatsLastActionService} from "../stats/statsLastAction.service";
+import {StatsLastActionService} from "../stats/stats-last-action.service";
+import {PlayersService} from "../players/players.service";
+import {MovesAutomaticService} from "./moves-automatic/moves-automatic.service";
+import {SnakeKeepAssDistanceService} from "../snake/snake-keep-ass-distance/snake-keep-ass-distance.service";
 
+@Global()
 @Injectable()
 export class MovesService {
   private movesQueue: any[] = [];
-  private players: any[] = [];
-
   private lastMoveSent: number = 0;
-
-  private timeoutAutomaticMove: any;
-  private timeoutCheckSnakeAssDistance: any;
 
   constructor(
     private readonly snakeService: SnakeService,
+    private readonly snakeAssDistanceService: SnakeKeepAssDistanceService,
     private readonly statsService: StatsService,
     private readonly statsLastActionService: StatsLastActionService,
     private readonly democracyService: DemocracyService,
-    private readonly controlsService: ControlsService
+    private readonly controlsService: ControlsService,
+    private readonly playersService: PlayersService,
+    private readonly movesAutomaticService: MovesAutomaticService
   ) {}
-
-  /**
-   * Reset automatic move because of anarchy moves
-   */
-  resetAutomaticMove() {
-    clearTimeout(this.timeoutAutomaticMove);
-
-    const snakeSpeed = this.snakeService.getSnakeSpeed();
-
-    // prepare to move automatically
-    this.timeoutAutomaticMove = setTimeout(() => this.doAutomaticMove(), snakeSpeed)
-  }
-
-  /**
-   * Prevent snake idling, move automatically
-   */
-  doAutomaticMove() {
-    // in democracy mode, new direction is determined on next move
-    if (this.democracyService.isDemocracyActive()) {
-      if (this.getCountMovesInQueue() > 0) {
-        const prevalentDirection = this.determinePrevalentDirection()
-
-        if (prevalentDirection) {
-          this.controlsService.setDirection(prevalentDirection.direction);
-
-          let username = `${prevalentDirection.votesPrevalentDirection} vote`;
-          if (prevalentDirection.votesPrevalentDirection !== 1) {
-            username = `${prevalentDirection.votesPrevalentDirection} votes`;
-          }
-
-          this.statsService.incrementMove();
-          this.statsLastActionService.addToLastActions({
-            username,
-            direction: prevalentDirection.direction,
-          });
-
-          this.resetMovesInQueue();
-        }
-      }
-    }
-
-    this.snakeService.nextMove();
-    this.resetAutomaticMove();
-    this.resetPlayers();
-  }
 
   /**
    * Add direction to moves queue
@@ -79,25 +36,13 @@ export class MovesService {
     // in anarchy mode, send every move to queue
     // in democracy mode, check if it's the first player move
     if (
-      !this.democracyService.isDemocracyActive() ||
-      this.democracyService.isDemocracyActive() && !this.hasPlayerAlreadySentMove(ip)
+      !this.democracyService.isDemocracyLevelInDemocracyRange() ||
+      this.democracyService.isDemocracyLevelInDemocracyRange()
     ) {
-      // add move to queue
+      // add move to generic queue
       this.movesQueue.push({ username, direction });
-      this.addPlayer(ip);
+      this.playersService.addPlayer(ip);
     }
-  }
-
-  addPlayer(ip: string) {
-    return this.players.push(ip)
-  }
-
-  resetPlayers() {
-    this.players = []
-  }
-
-  hasPlayerAlreadySentMove(ip: string) {
-    return this.players.includes(ip)
   }
 
   /**
@@ -122,7 +67,7 @@ export class MovesService {
    * Process next move in queue (determine timings and run it)
    */
   processNextMoveInQueue() {
-    this.resetAutomaticMove();
+    this.movesAutomaticService.resetAutomaticMove();
 
     if (this.getCountMovesInQueue() > 0) {
       if (((+ new Date()) - this.lastMoveSent) > 500) {
@@ -164,11 +109,10 @@ export class MovesService {
     this.statsLastActionService.addToLastActions(nextMove);
     this.controlsService.setDirection(nextMove.direction);
 
-    this.resetAutomaticMove();
+    this.movesAutomaticService.resetAutomaticMove();
 
     // prevent face2ass after 120 sec
-    clearTimeout(this.timeoutCheckSnakeAssDistance);
-    this.timeoutCheckSnakeAssDistance = setTimeout(() => this.checkSnakeAssDistance(), 120000);
+    this.snakeAssDistanceService.resetSnakeAssDistanceCheck()
 
     this.snakeService.nextMove();
 
@@ -254,12 +198,6 @@ export class MovesService {
       });
 
       return countDirectionsTmp;
-    }
-  }
-
-  private checkSnakeAssDistance() {
-    if (this.snakeService.getSnake().body.length === 20) {
-      this.snakeService.removeLength();
     }
   }
 }

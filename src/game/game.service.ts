@@ -7,6 +7,7 @@ import {GoodiesService} from "../goodies/goodies.service";
 import {DemocracyService} from "../democracy/democracy.service";
 import {StatsService} from "../stats/stats.service";
 import {MovesService} from "../moves/moves.service";
+import {MovesAutomaticService} from "../moves/moves-automatic/moves-automatic.service";
 
 @Injectable()
 export class GameService {
@@ -17,8 +18,9 @@ export class GameService {
     private readonly controlsService: ControlsService,
     private readonly goodiesService: GoodiesService,
     private readonly democracyService: DemocracyService,
-    private readonly statsService: StatsService,
     private readonly movesService: MovesService,
+    private readonly movesAutomaticService: MovesAutomaticService,
+    private readonly statsService: StatsService,
   ) {
 
   }
@@ -60,7 +62,7 @@ export class GameService {
       this.snakeService.reset();
     }
 
-    this.movesService.resetAutomaticMove();
+    this.movesAutomaticService.resetAutomaticMove();
   }
   /**
    * Save current game state

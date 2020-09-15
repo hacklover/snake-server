@@ -9,21 +9,21 @@ import { UtilsModule } from './utils/utils.module';
 import { StatsModule } from './stats/stats.module';
 import { GatewayModule } from './gateway/gateway.module';
 import { DemocracyModule } from './democracy/democracy.module';
-import { MovesModule } from './moves/moves.module';
 import { GameModule } from './game/game.module';
+import { PlayersModule } from './players/players.module';
 
 @Module({
   imports: [
-    SnakeModule,
     GameModule,
-    ControlsModule,
-    StorageModule,
+    SnakeModule,
     GoodiesModule,
-    UtilsModule,
-    StatsModule,
-    GatewayModule,
+    ControlsModule,
     DemocracyModule,
-    MovesModule
+    GatewayModule,
+    StatsModule,
+    StorageModule,
+    UtilsModule,
+    PlayersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,20 +1,17 @@
 import {Injectable} from '@nestjs/common';
-import {ControlsService} from '../controls/controls.service';
-import {StatsService} from "../stats/stats.service";
-import {StatsLastActionService} from "../stats/statsLastAction.service";
+import {StatsLastActionService} from "../stats/stats-last-action.service";
+import {MovesAutomaticService} from "../moves/moves-automatic/moves-automatic.service";
 
 @Injectable()
 export class DemocracyService {
+    private mode: string;
     private democracyLevel: number = Number(process.env.DEMOCRACY_STARTING_LEVEL);
     private voters = [];
 
     constructor(
-      private readonly controlsService: ControlsService,
-      private readonly statsService: StatsService,
       private readonly statsLastActionService: StatsLastActionService,
-    ) {
-
-    }
+      //private readonly movesAutomaticService: MovesAutomaticService,
+    ) {}
 
     public applyDemocracyVotes() {
         const vote = this.checkPrevalentDemocracyVote();
@@ -24,6 +21,12 @@ export class DemocracyService {
         }
         if (vote === 'democracy' && this.democracyLevel < 99) {
             this.democracyLevel++;
+        }
+
+        if (this.isDemocracyLevelInDemocracyRange()) {
+            this.setDemocracyMode('democracy')
+        } else {
+            this.setDemocracyMode('anarchy')
         }
 
         // clear votes
@@ -108,10 +111,33 @@ export class DemocracyService {
     }
 
     /**
+     * Set democracy mode
+     */
+    public setDemocracyMode(mode) {
+        this.mode = mode
+
+        switch(mode) {
+            case 'anarchy':
+                // todo probably it fixes something but it's a shitty fix
+                // todo something have to be rewritten
+                //this.movesAutomaticService.resetAutomaticMove();
+                //this.movesService.processNextMoveInQueue();
+            break;
+        }
+    }
+
+    /**
+     * Check if democracy level is active
+     */
+    public isDemocracyLevelInDemocracyRange() {
+        return this.getDemocracyLevel() >= Number(process.env.DEMOCRACY_STARTS_AT);
+    }
+
+    /**
      * Check if democracy is active
      */
     public isDemocracyActive() {
-        return this.getDemocracyLevel() >= Number(process.env.DEMOCRACY_STARTS_AT);
+        return this.mode === 'democracy'
     }
 
     /**
@@ -123,3 +149,4 @@ export class DemocracyService {
         return ['democracy', 'anarchy'].includes(vote)
     }
 }
+

@@ -1,13 +1,15 @@
 import {Module, forwardRef} from '@nestjs/common';
 import { DemocracyService } from './democracy.service';
 import { DemocracyController } from './democracy.controller';
-import {ControlsModule} from "../controls/controls.module";
 import {StatsModule} from "../stats/stats.module";
+import {SnakeModule} from "../snake/snake.module";
+import {MovesModule} from "../moves/moves.module";
 
 @Module({
   imports: [
-    forwardRef(() => ControlsModule),
-    forwardRef(() => StatsModule)
+    forwardRef(() => StatsModule),
+    forwardRef(() => SnakeModule),
+    forwardRef(() => MovesModule),
   ],
   controllers: [DemocracyController],
   providers: [DemocracyService],
