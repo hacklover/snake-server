@@ -1,7 +1,6 @@
 import {forwardRef, Global, Module} from '@nestjs/common';
 import { SnakeService } from './snake.service';
 import {ControlsModule} from "../controls/controls.module";
-import {DemocracyModule} from "../democracy/democracy.module";
 import {GoodiesModule} from "../goodies/goodies.module";
 import {StatsModule} from "../stats/stats.module";
 import { SnakeKeepAssDistanceService } from './snake-keep-ass-distance/snake-keep-ass-distance.service';
@@ -11,7 +10,6 @@ import { SnakeKeepAssDistanceService } from './snake-keep-ass-distance/snake-kee
   imports: [
     forwardRef(() => GoodiesModule),
     forwardRef(() => ControlsModule),
-    forwardRef(() => DemocracyModule),
     forwardRef(() => StatsModule),
   ],
   providers: [SnakeService, SnakeKeepAssDistanceService],

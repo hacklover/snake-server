@@ -17,7 +17,6 @@ import { PlayersModule } from './players/players.module';
     SnakeModule,
     GoodiesModule,
     ControlsModule,
-    // DemocracyModule,
     GatewayModule,
     StatsModule,
     StorageModule,

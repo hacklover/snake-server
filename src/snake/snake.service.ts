@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Goodie, Snake } from '../interfaces/common.interface';
 import { GoodiesService } from '../goodies/goodies.service';
 import { ControlsService } from '../controls/controls.service';
-import { DemocracyService } from '../democracy/democracy.service';
 import { StatsService } from '../stats/stats.service';
 import { UtilsService } from '../utils/utils.service';
 import { GatewayService } from '../gateway/gateway.service';
@@ -26,7 +25,6 @@ export class SnakeService {
     private readonly goodiesService: GoodiesService,
     private readonly controlsService: ControlsService,
     private readonly controlsInactivityService: GameInactiveService,
-    private readonly democracyService: DemocracyService,
     private readonly statsService: StatsService,
     private readonly statsLastActionService: StatsLastActionService,
   ) {}
@@ -38,10 +36,9 @@ export class SnakeService {
     const snake = this.getSnake();
     const goodies = this.goodiesService.getGoodies();
     const stats = this.statsService.getStats();
-    const democracyLevel = this.democracyService.getDemocracyLevel();
     const lastActions = this.statsLastActionService.getLastActions();
 
-    return { snake, goodies, stats, democracyLevel, lastActions };
+    return { snake, goodies, stats, lastActions };
   }
 
   /**
