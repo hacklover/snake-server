@@ -4,7 +4,6 @@ import {StorageService} from "../storage/storage.service";
 import {SnakeService} from "../snake/snake.service";
 import {ControlsService} from "../controls/controls.service";
 import {GoodiesService} from "../goodies/goodies.service";
-import {DemocracyService} from "../democracy/democracy.service";
 import {StatsService} from "../stats/stats.service";
 import {MovesService} from "../moves/moves.service";
 import {MovesAutomaticService} from "../moves/moves-automatic/moves-automatic.service";
@@ -17,7 +16,6 @@ export class GameService {
     private readonly snakeService: SnakeService,
     private readonly controlsService: ControlsService,
     private readonly goodiesService: GoodiesService,
-    private readonly democracyService: DemocracyService,
     private readonly movesService: MovesService,
     private readonly movesAutomaticService: MovesAutomaticService,
     private readonly statsService: StatsService,
@@ -36,7 +34,6 @@ export class GameService {
     this.snakeService.setSnake(this.game.snake);
     this.controlsService.setDirection(this.game.snake.direction);
     this.goodiesService.setGoodies(this.game.goodies);
-    this.democracyService.setDemocracyLevel(this.game.democracyLevel);
     this.statsService.setStats(this.game.stats);
 
     // reset lazy mode
@@ -91,8 +88,7 @@ export class GameService {
         score: 0,
         goodies: 0,
         moves: 0
-      },
-      democracyLevel: 40
+      }
     }
   }
 }

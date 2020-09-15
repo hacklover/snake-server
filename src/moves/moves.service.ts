@@ -2,7 +2,6 @@ import {Global, Injectable} from '@nestjs/common';
 import {SnakeService} from "../snake/snake.service";
 import {ControlsService} from "../controls/controls.service";
 import {StatsService} from "../stats/stats.service";
-import {DemocracyService} from "../democracy/democracy.service";
 import {StatsLastActionService} from "../stats/stats-last-action.service";
 import {PlayersService} from "../players/players.service";
 import {MovesAutomaticService} from "./moves-automatic/moves-automatic.service";
@@ -19,7 +18,6 @@ export class MovesService {
     private readonly snakeAssDistanceService: SnakeKeepAssDistanceService,
     private readonly statsService: StatsService,
     private readonly statsLastActionService: StatsLastActionService,
-    private readonly democracyService: DemocracyService,
     private readonly controlsService: ControlsService,
     private readonly playersService: PlayersService,
     private readonly movesAutomaticService: MovesAutomaticService
@@ -33,16 +31,9 @@ export class MovesService {
    * @param direction
    */
   addDirectionToMovesQueue(username: string, ip: string, direction: string) {
-    // in anarchy mode, send every move to queue
-    // in democracy mode, check if it's the first player move
-    if (
-      !this.democracyService.isDemocracyActive() ||
-      this.democracyService.isDemocracyActive() && !this.playersService.isPlayerAlreadyinList(ip)
-    ) {
-      // add move to generic queue
-      this.movesQueue.push({ username, direction });
-      this.playersService.addPlayer(ip);
-    }
+    // add move to generic queue
+    this.movesQueue.push({ username, direction });
+    this.playersService.addPlayer(ip);
   }
 
   /**
@@ -69,7 +60,7 @@ export class MovesService {
   processNextMoveInQueue() {
     if (this.getCountMovesInQueue() > 0) {
       if (((+ new Date()) - this.lastMoveSent) > Number(process.env.MOVES_QUEUE_NEXT_MOVE_TIMEOUT)) {
-        // last move sent is < 1000, do move immediately
+        // last move time sent is > 1000ms, do move immediately
         this.doNextMoveInQueue();
       } else {
         setTimeout(() => {

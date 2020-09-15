@@ -2,7 +2,6 @@ import {Controller, Post, Ip, Body, HttpException, HttpStatus, NotAcceptableExce
 import {SnakeService} from '../snake/snake.service';
 import {ControlsService} from './controls.service';
 import {UtilsService} from '../utils/utils.service';
-import {DemocracyService} from '../democracy/democracy.service';
 import {MovesService} from "../moves/moves.service";
 import {MovesAutomaticService} from "../moves/moves-automatic/moves-automatic.service";
 
@@ -10,7 +9,6 @@ import {MovesAutomaticService} from "../moves/moves-automatic/moves-automatic.se
 export class ControlsController {
     constructor(
         private readonly snakeService: SnakeService,
-        private readonly democracyService: DemocracyService,
         private readonly movesService: MovesService,
         private readonly movesAutomaticService: MovesAutomaticService,
         private readonly controlsService: ControlsService,
@@ -46,11 +44,9 @@ export class ControlsController {
         this.movesService.addDirectionToMovesQueue(username, ip, direction);
 
         // with anarchy mode, process move now if movesInQueue === 1
-        if (!this.democracyService.isDemocracyActive() && this.movesService.getCountMovesInQueue() === 1) {
+        if (this.movesService.getCountMovesInQueue() === 1) {
             this.movesService.processNextMoveInQueue();
         }
-
-        this.movesAutomaticService.resetAutomaticMove();
 
         return { success: true };
     }

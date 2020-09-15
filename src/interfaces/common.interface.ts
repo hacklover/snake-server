@@ -2,7 +2,6 @@ export interface Game {
   snake: Snake;
   goodies: Goodie[];
   stats: Stats;
-  democracyLevel: number;
 }
 
 export interface Snake {
