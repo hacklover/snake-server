@@ -8,7 +8,7 @@ import { StatsService } from '../stats/stats.service';
 import { UtilsService } from '../utils/utils.service';
 import { GatewayService } from '../gateway/gateway.service';
 import {GameInactiveService} from '../game/game-inactive.service';
-import {StatsLastActionService} from "../stats/statsLastAction.service";
+import {StatsLastActionService} from "../stats/stats-last-action.service";
 
 const snakeStage = {
   width: Number(process.env.SNAKE_STAGE_WIDTH),
@@ -200,7 +200,7 @@ export class SnakeService {
             // restore previous mode
             this.intervalLazyMode = setTimeout(() => {
               this.snake.mode = this.previousMode;
-            }, 10000);
+            }, 4000);
             break;
 
           /*
