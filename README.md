@@ -1,6 +1,6 @@
 # Web Plays Snake server
   
-> Web Plays Snake is an open collaborative sandbox platform based on the snake game. It was an experiment made in 2016 with Express.js and Socket.io, then the code has been migrated to Nest.js  
+> Web Plays Snake is an open cooperative sandbox platform based on the snake game. It was an experiment made in 2016 with Express.js and Socket.io, then the code has been migrated to Nest.js  
 
 <p>
     <a href="https://github.com/hacklover/curriculum-vuetae/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" /></a>
