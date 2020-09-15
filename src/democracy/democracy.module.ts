@@ -1,10 +1,14 @@
-import 'dotenv/config';
-import { Module, Global } from '@nestjs/common';
+import {Module, forwardRef} from '@nestjs/common';
 import { DemocracyService } from './democracy.service';
 import { DemocracyController } from './democracy.controller';
+import {ControlsModule} from "../controls/controls.module";
+import {StatsModule} from "../stats/stats.module";
 
-@Global()
 @Module({
+  imports: [
+    forwardRef(() => ControlsModule),
+    forwardRef(() => StatsModule)
+  ],
   controllers: [DemocracyController],
   providers: [DemocracyService],
   exports: [DemocracyService],
