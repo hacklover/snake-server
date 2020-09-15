@@ -1,0 +1,78 @@
+{
+  "name": "snake-server",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "nest",
+    "express",
+    "snake",
+    "server"
+  ],
+  "homepage": "https://github.com/hacklover/curriculum-vuetae",
+  "license": "MIT",
+  "author": {
+    "name": "hacklover",
+    "url": "https://hacklover.net"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/main.js\"",
+    "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk dist/main.js\"",
+    "start:prod": "node dist/main.js",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^6.11.5",
+    "@nestjs/core": "^6.11.5",
+    "@nestjs/platform-express": "^6.11.5",
+    "@nestjs/platform-socket.io": "^6.11.6",
+    "@nestjs/platform-ws": "^6.11.6",
+    "@nestjs/websockets": "^6.11.6",
+    "dotenv": "^8.2.0",
+    "express-rate-limit": "^5.0.0",
+    "lowdb": "^1.0.0",
+    "nestjs-sse": "^1.0.2",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.1",
+    "rxjs": "^6.5.4",
+    "socket.io": "^2.3.0",
+    "socket.io-redis": "^5.2.0"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^6.11.5",
+    "@types/express": "4.17.2",
+    "@types/jest": "25.1.1",
+    "@types/node": "13.7.0",
+    "@types/supertest": "2.0.8",
+    "jest": "25.1.0",
+    "prettier": "1.19.1",
+    "supertest": "4.0.2",
+    "ts-jest": "25.1.0",
+    "ts-node": "8.6.2",
+    "tsc-watch": "4.1.0",
+    "tsconfig-paths": "3.9.0",
+    "tslint": "6.0.0",
+    "typescript": "3.7.5"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
