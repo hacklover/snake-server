@@ -36,8 +36,8 @@ export class MovesService {
     // in anarchy mode, send every move to queue
     // in democracy mode, check if it's the first player move
     if (
-      !this.democracyService.isDemocracyLevelInDemocracyRange() ||
-      this.democracyService.isDemocracyLevelInDemocracyRange()
+      !this.democracyService.isDemocracyActive() ||
+      this.democracyService.isDemocracyActive() && !this.playersService.isPlayerAlreadyinList(ip)
     ) {
       // add move to generic queue
       this.movesQueue.push({ username, direction });
@@ -67,10 +67,8 @@ export class MovesService {
    * Process next move in queue (determine timings and run it)
    */
   processNextMoveInQueue() {
-    this.movesAutomaticService.resetAutomaticMove();
-
     if (this.getCountMovesInQueue() > 0) {
-      if (((+ new Date()) - this.lastMoveSent) > 500) {
+      if (((+ new Date()) - this.lastMoveSent) > Number(process.env.MOVES_QUEUE_NEXT_MOVE_TIMEOUT)) {
         // last move sent is < 1000, do move immediately
         this.doNextMoveInQueue();
       } else {
@@ -79,7 +77,7 @@ export class MovesService {
           // (there are others moves in queue)
           this.doNextMoveInQueue();
           this.processNextMoveInQueue()
-        }, 300);
+        }, Number(process.env.MOVES_QUEUE_NEXT_MOVE_TIMEOUT));
       }
     }
   }

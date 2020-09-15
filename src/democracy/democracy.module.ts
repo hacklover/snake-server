@@ -11,7 +11,6 @@ import {MovesModule} from "../moves/moves.module";
     forwardRef(() => SnakeModule),
     forwardRef(() => MovesModule),
   ],
-  controllers: [DemocracyController],
   providers: [DemocracyService],
   exports: [DemocracyService],
 })

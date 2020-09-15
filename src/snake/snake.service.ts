@@ -200,7 +200,7 @@ export class SnakeService {
             // restore previous mode
             this.intervalLazyMode = setTimeout(() => {
               this.snake.mode = this.previousMode;
-            }, 10000);
+            }, 4000);
             break;
 
           /*

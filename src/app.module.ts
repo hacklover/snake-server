@@ -8,7 +8,6 @@ import { GoodiesModule } from './goodies/goodies.module';
 import { UtilsModule } from './utils/utils.module';
 import { StatsModule } from './stats/stats.module';
 import { GatewayModule } from './gateway/gateway.module';
-import { DemocracyModule } from './democracy/democracy.module';
 import { GameModule } from './game/game.module';
 import { PlayersModule } from './players/players.module';
 
@@ -18,7 +17,7 @@ import { PlayersModule } from './players/players.module';
     SnakeModule,
     GoodiesModule,
     ControlsModule,
-    DemocracyModule,
+    // DemocracyModule,
     GatewayModule,
     StatsModule,
     StorageModule,

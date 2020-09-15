@@ -40,6 +40,7 @@ export class MovesAutomaticService {
    */
   doAutomaticMove() {
     // in democracy mode, new direction is determined on next move
+    /*
     if (this.democracyService.isDemocracyActive()) {
       if (this.movesService.getCountMovesInQueue() > 0) {
         const prevalentDirection = this.movesService.determinePrevalentDirection()
@@ -62,9 +63,10 @@ export class MovesAutomaticService {
         }
       }
     }
+    */
 
-    this.snakeService.nextMove();
     this.resetAutomaticMove();
+    this.snakeService.nextMove();
     this.playersService.resetPlayers();
   }
 }
