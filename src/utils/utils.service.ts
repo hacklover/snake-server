@@ -1,6 +1,5 @@
-import { Global, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
-@Global()
 @Injectable()
 export class UtilsService {
   static randomNumber(min: number, max: number): number {

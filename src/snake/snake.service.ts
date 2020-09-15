@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { Injectable } from '@nestjs/common';
 
 import { Goodie, Snake } from '../interfaces/common.interface';

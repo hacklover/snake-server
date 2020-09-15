@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {Injectable} from '@nestjs/common';
 import {ControlsService} from '../controls/controls.service';
 import {StatsService} from "../stats/stats.service";
