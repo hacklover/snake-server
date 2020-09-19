@@ -1,15 +1,14 @@
-import { Module,forwardRef } from '@nestjs/common';
+import { Module,Global } from '@nestjs/common';
 import { ControlsService } from './controls.service';
 import { ControlsController } from './controls.controller';
-import {SnakeModule} from "../snake/snake.module";
 import {StatsModule} from "../stats/stats.module";
 import {MovesModule} from "../moves/moves.module";
 
+@Global()
 @Module({
   imports: [
-    forwardRef(() => SnakeModule),
-    forwardRef(() => StatsModule),
-    forwardRef(() => MovesModule),
+    StatsModule,
+    MovesModule,
   ],
   controllers: [ControlsController],
   providers: [ControlsService],
