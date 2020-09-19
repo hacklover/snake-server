@@ -1,6 +1,6 @@
 # Web Plays Snake - Server
   
-> Web Plays Snake is an open cooperative sandbox platform based on the snake game. It was an experiment made in 2016 with Express.js and Socket.io, then the code has been migrated to Nest.js  
+> Web Plays Snake is a cooperative sandbox platform based on the snake game. It was an experiment made in 2016 with Express.js and Socket.io, then the code has been migrated to Nest.js  
 
 Client source isn't included for now.  
 Build your own! https://snake.hacklover.net
@@ -39,12 +39,11 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-
-# client tests
-# (you have to allow insecure content because of http)
-+ https://snake.hacklover.net/?url=http://localhost:4000
 ```
 
+## Client test
+You have to allow insecure content because of http.
+https://snake.hacklover.net/?url=http://localhost:4000
 
 ## License
 
