@@ -42,7 +42,7 @@ $ npm run test:cov
 ```
 
 ## Client test
-You have to allow insecure content because of http.
+You have to allow insecure content because of http.  
 https://snake.hacklover.net/?url=http://localhost:4000
 
 ## License
