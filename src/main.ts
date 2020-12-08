@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import {NestExpressApplication} from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
 
-const port = process.env.APP_PORT || 4000;
+const port = process.env.PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
