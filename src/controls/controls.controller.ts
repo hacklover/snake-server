@@ -44,6 +44,11 @@ export class ControlsController {
         // add snake direction to move queues
         this.movesService.addDirectionToMovesQueue(username, ip, direction);
 
+        // process move now if is in anarchy mode
+        if (this.movesService.getCountMovesInQueue() === 1) {
+            this.movesService.handleNextMoveInQueue();
+        }
+
         return { success: true };
     }
 }

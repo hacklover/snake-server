@@ -33,7 +33,7 @@ export class MovesService {
    */
   addDirectionToMovesQueue(username: string, ip: string, direction: string) {
     // add move to generic queue
-    this.movesQueue.push({ user: { username, ip }, direction });
+    this.movesQueue.push({ username, direction });
     this.playersService.addPlayer(ip);
   }
 

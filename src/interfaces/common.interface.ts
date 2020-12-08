@@ -24,7 +24,7 @@ export interface Stats {
 }
 
 export interface SnakeMove {
-  user: User;
+  username: string;
   direction: string;
 }
 
