@@ -19,9 +19,7 @@ export class GameService {
     private readonly movesService: MovesService,
     private readonly movesAutomaticService: MovesAutomaticService,
     private readonly statsService: StatsService,
-  ) {
-
-  }
+  ) {}
 
   /**
    * Load previous game state
@@ -36,30 +34,30 @@ export class GameService {
     this.goodiesService.setGoodies(this.game.goodies);
     this.statsService.setStats(this.game.stats);
 
-    // reset lazy mode
-    if (this.snakeService.getMode() === 'lazy') {
-      this.snakeService.setMode('default');
+    // if snake length <= 1, resetSnake it
+    if (this.snakeService.getSnakeLength() <= 1) {
+      this.snakeService.resetSnake();
     }
 
-    // if is a new game
-    if (this.statsService.getStats().score === 0) {
-      // add some goodies
+    // if there are no goodies, spawn some
+    if (this.goodiesService.getGoodiesCount() === 0) {
       for (let i = 0; i < 3; i++) {
-        this.goodiesService.addGoodie();
+        this.goodiesService.addGoody();
       }
     }
 
-    // fix damage if snake starts damaged
-    if (this.snakeService.isDamaged() === true) {
-      this.snakeService.setDamaged(false);
+    // resetSnake snake lazy mode
+    if (this.snakeService.getSnakeMode() === 'lazy') {
+      this.snakeService.setSnakeMode('default');
     }
 
-    // length = 0, reset
-    if (this.snakeService.getLength() === 0) {
-      this.snakeService.reset();
+    // resetSnake snake damage state
+    if (this.snakeService.isSnakeDamaged() === true) {
+      this.snakeService.setSnakeDamaged(false);
     }
 
-    this.movesAutomaticService.resetAutomaticMove();
+    // snake move auto
+    this.movesAutomaticService.resetSnakeSnakeAutoMoveTimeout();
   }
   /**
    * Save current game state

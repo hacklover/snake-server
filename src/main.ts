@@ -12,8 +12,10 @@ async function bootstrap() {
   // cors
   app.enableCors();
 
-  // only in production
-  app.set('trust proxy', 1);
+  // allow reverse proxy
+  if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+  }
 
   // rate limiter
   app.use(

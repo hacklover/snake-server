@@ -1,33 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { Goodie } from '../interfaces/common.interface';
+import { Goody } from '../interfaces/common.interface';
 
 @Injectable()
 export class GoodiesService {
   // goodies active
-  private goodies: Goodie[] = [];
+  private goodies: Goody[] = [];
 
   // list for random goodies (purely shit code but it's ok)
   private randomGoodiesAvailability: number[] = [0, 0, 0, 1, 1, 1, 2, 4, 4, 4, 5, 5];
 
+  /**
+   * Get goodies ist
+   */
   public getGoodies() {
     return this.goodies;
   }
 
+  /**
+   * Get goodies count
+   */
   public getGoodiesCount() {
     return this.goodies.length;
   }
 
-  public setGoodies(goodies: Goodie[]) {
+  /**
+   * Set cookies
+   *
+   * @param goodies
+   */
+  public setGoodies(goodies: Goody[]) {
     this.goodies = goodies;
   }
 
   /**
-   * Create new goodie
+   * Create new goody
    *
    * @param type
    * @param pos
    */
-  public addGoodie(type: number = 0, pos: number[] = [-1,-1]) {
+  public addGoody(type: number = 0, pos: number[] = [-1,-1]) {
     if (pos[0] === -1) {
       // choose random x position
       pos[0] = Math.floor(Math.random() * Number(process.env.SNAKE_STAGE_WIDTH));
@@ -44,25 +55,24 @@ export class GoodiesService {
   }
 
   /**
-   * Create random goodie
+   * Create random goody
    */
-  public addRandomGoodie() {
-    // drop it
-    const randomGoodieIndex = Math.floor(Math.random() * (this.randomGoodiesAvailability.length + 1));
-    const randomGoodieType = this.randomGoodiesAvailability[randomGoodieIndex];
+  public addRandomGoody() {
+    const randomGoodyIndex = Math.floor(Math.random() * (this.randomGoodiesAvailability.length + 1));
+    const randomGoodyType = this.randomGoodiesAvailability[randomGoodyIndex];
 
-    this.addGoodie(randomGoodieType);
+    this.addGoody(randomGoodyType);
   }
 
   /**
    * Get goodie score
    *
-   * @param goodie
+   * @param goody
    */
-  static getGoodieScore(goodie) {
+  static getGoodyScore(goody: Goody) {
     let score;
 
-    switch (goodie.type) {
+    switch (goody.type) {
       case 1:
         score = 50;
         break;

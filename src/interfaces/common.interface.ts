@@ -1,6 +1,6 @@
 export interface Game {
   snake: Snake;
-  goodies: Goodie[];
+  goodies: Goody[];
   stats: Stats;
 }
 
@@ -12,7 +12,7 @@ export interface Snake {
   damaged: boolean;
 }
 
-export interface Goodie {
+export interface Goody {
   type: number;
   pos: any[];
 }
@@ -23,8 +23,8 @@ export interface Stats {
   moves: number;
 }
 
-export interface LastMove {
-  user: number;
+export interface SnakeMove {
+  user: User;
   direction: string;
 }
 

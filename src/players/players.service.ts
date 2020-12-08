@@ -4,19 +4,32 @@ import { Injectable } from '@nestjs/common';
 export class PlayersService {
   private players: any[] = [];
 
+  /**
+   * Add player ip
+   *
+   * @param ip
+   */
   addPlayer(ip: string) {
-    if (!this.isPlayerAlreadyinList(ip)) {
+    if (!this.isPlayerInList(ip)) {
       return this.players.push(ip)
     }
 
     return false
   }
 
-  resetPlayers() {
+  /**
+   * resetSnake players
+   */
+  resetSnakePlayers() {
     this.players = []
   }
 
-  isPlayerAlreadyinList(ip: string) {
+  /**
+   * Check if player ip already in list
+   *
+   * @param ip
+   */
+  isPlayerInList(ip: string) {
     return this.players.includes(ip)
   }
 }

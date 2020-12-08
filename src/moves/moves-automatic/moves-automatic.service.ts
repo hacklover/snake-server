@@ -8,7 +8,7 @@ import {PlayersService} from "../../players/players.service";
 
 @Injectable()
 export class MovesAutomaticService {
-  private timeoutAutomaticMove: any;
+  private timeoutAutoMove: any;
 
   constructor(
     @Inject(forwardRef(() => MovesService)) private readonly movesService: MovesService,
@@ -17,28 +17,28 @@ export class MovesAutomaticService {
     private readonly statsLastActionService: StatsLastActionService,
     private readonly controlsService: ControlsService,
     private readonly playersService: PlayersService
-  ) {
-
-  }
+  ) {}
 
   /**
-   * Reset automatic move because of anarchy moves
+   * resetSnake automatic move because of anarchy moves
    */
-  resetAutomaticMove() {
-    clearTimeout(this.timeoutAutomaticMove);
-
+  resetSnakeSnakeAutoMoveTimeout() {
     const snakeSpeed = this.snakeService.getSnakeSpeed();
 
-    // prepare to move automatically
-    this.timeoutAutomaticMove = setTimeout(() => this.doAutomaticMove(), snakeSpeed)
+    clearTimeout(this.timeoutAutoMove);
+
+    // move snake automatically in {snakeSpeed} seconds
+    this.timeoutAutoMove = setTimeout(() => {
+      this.doAutomaticMove()
+      this.resetSnakeSnakeAutoMoveTimeout()
+    }, snakeSpeed)
   }
 
   /**
    * Prevent snake idling, move automatically
    */
   doAutomaticMove() {
-    this.resetAutomaticMove();
     this.snakeService.nextMove();
-    this.playersService.resetPlayers();
+    this.playersService.resetSnakePlayers();
   }
 }

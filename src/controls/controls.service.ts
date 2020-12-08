@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { StatsService } from '../stats/stats.service';
-import {GameInactiveService} from "../game/game-inactive.service";
 
 @Injectable()
 export class ControlsService {
+  // valid directions
   private readonly validDirections: string[] = ['up', 'left', 'right', 'down'];
-  private direction: string;
 
-  constructor(
-    private readonly statsService: StatsService,
-    private readonly controlsInactivityService: GameInactiveService
-  ) {}
+  // current direction
+  private direction: string;
 
   /**
    * Get current direction
@@ -45,42 +41,22 @@ export class ControlsService {
   isOppositeDirection(direction: string) {
     const currentDirection = this.getDirection();
 
-    // prevent opposite direction
     switch (direction) {
       case 'up':
-        if (currentDirection === 'down') {
-          return true;
-        }
+        if (currentDirection === 'down') return true;
         break;
       case 'down':
-        if (currentDirection === 'up') {
-          return true;
-        }
+        if (currentDirection === 'up') return true;
         break;
       case 'left':
-        if (currentDirection === 'right') {
-          return true;
-        }
+        if (currentDirection === 'right') return true;
         break;
       case 'right':
-        if (currentDirection === 'left') {
-          return true;
-        }
+        if (currentDirection === 'left') return true;
         break;
     }
 
     return false
-  }
-
-  /**
-   * Is direction the same current direction
-   *
-   * @param direction
-   */
-  isDirectionSameAsCurrent(direction: string) {
-    const currentDirection = this.getDirection();
-
-    return (currentDirection === direction)
   }
 
   /**
@@ -97,18 +73,5 @@ export class ControlsService {
     }
 
     return validDirections[Math.floor(Math.random() * validDirections.length)];
-  }
-
-  /**
-   * Apply direction
-   *
-   * @param direction
-   */
-  applyDirection(direction: string) {
-    // reset seconds last move
-    this.controlsInactivityService.resetSecondsSinceLastMove();
-
-    // set snake direction
-    this.setDirection(direction);
   }
 }

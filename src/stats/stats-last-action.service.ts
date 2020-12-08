@@ -8,7 +8,7 @@ export class StatsLastActionService {
     return this.lastActions
   }
 
-  resetLastActions() {
+  resetSnakeLastActions() {
     this.lastActions = [];
   }
 

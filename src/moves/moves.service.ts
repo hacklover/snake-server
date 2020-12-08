@@ -6,11 +6,12 @@ import {StatsLastActionService} from "../stats/stats-last-action.service";
 import {PlayersService} from "../players/players.service";
 import {MovesAutomaticService} from "./moves-automatic/moves-automatic.service";
 import {SnakeKeepAssDistanceService} from "../snake/snake-keep-ass-distance/snake-keep-ass-distance.service";
+import { SnakeMove } from '../interfaces/common.interface';
 
 @Global()
 @Injectable()
 export class MovesService {
-  private movesQueue: any[] = [];
+  private movesQueue: SnakeMove[] = [];
   private lastMoveSent: number = 0;
 
   constructor(
@@ -32,7 +33,7 @@ export class MovesService {
    */
   addDirectionToMovesQueue(username: string, ip: string, direction: string) {
     // add move to generic queue
-    this.movesQueue.push({ username, direction });
+    this.movesQueue.push({ user: { username, ip }, direction });
     this.playersService.addPlayer(ip);
   }
 
@@ -50,24 +51,26 @@ export class MovesService {
     return this.movesQueue[0]
   }
 
-  resetMovesInQueue() {
+  /**
+   * resetSnake moves
+   */
+  resetSnakeMovesInQueue() {
     this.movesQueue = []
   }
 
   /**
    * Process next move in queue (determine timings and run it)
    */
-  processNextMoveInQueue() {
+  handleNextMoveInQueue() {
     if (this.getCountMovesInQueue() > 0) {
       if (((+ new Date()) - this.lastMoveSent) > Number(process.env.MOVES_QUEUE_NEXT_MOVE_TIMEOUT)) {
-        // last move time sent is > 1000ms, do move immediately
-        this.doNextMoveInQueue();
+        // last move time sent is > 1000ms, process move immediately
+        this.processNextMoveInQueue();
       } else {
         setTimeout(() => {
-          // wait some time before do next move, then call this method again
-          // (there are others moves in queue)
-          this.doNextMoveInQueue();
-          this.processNextMoveInQueue()
+          // wait some time before process next move, then call this method again
+          this.processNextMoveInQueue();
+          this.handleNextMoveInQueue()
         }, Number(process.env.MOVES_QUEUE_NEXT_MOVE_TIMEOUT));
       }
     }
@@ -76,18 +79,18 @@ export class MovesService {
   /**
    * Apply next move in queue
    */
-  doNextMoveInQueue() {
+  processNextMoveInQueue() {
     const nextMove = this.getNextMoveInQueue();
 
     if (this.controlsService.isOppositeDirection(nextMove.direction)) {
       // when damaged, can do opposite direction
-      if (!this.snakeService.isDamaged()) {
+      if (!this.snakeService.isSnakeDamaged()) {
         // delete move, not more needed
         this.movesQueue.shift();
 
         // skip move
         if (this.getCountMovesInQueue() > 0) {
-          this.doNextMoveInQueue()
+          this.processNextMoveInQueue()
         }
 
         return false;
@@ -98,10 +101,10 @@ export class MovesService {
     this.statsLastActionService.addToLastActions(nextMove);
     this.controlsService.setDirection(nextMove.direction);
 
-    this.movesAutomaticService.resetAutomaticMove();
+    this.movesAutomaticService.resetSnakeSnakeAutoMoveTimeout();
 
     // prevent face2ass after 120 sec
-    this.snakeAssDistanceService.resetSnakeAssDistanceCheck()
+    this.snakeAssDistanceService.resetSnakeSnakeAssDistanceCheck()
 
     this.snakeService.nextMove();
 

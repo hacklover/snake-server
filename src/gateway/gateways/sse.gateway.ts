@@ -14,11 +14,7 @@ export class SseGateway {
 
     // update when observer is triggered
     snakeGameStream.subscribe({
-      next: v => {
-        if (res.sse) {
-          res.sse(`data: ${JSON.stringify(v)}\n\n`);
-        }
-      },
+      next: data => res.sse(`data: ${JSON.stringify(data)}\n\n`)
     });
   }
 }

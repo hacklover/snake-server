@@ -14,8 +14,4 @@ import { SnakeKeepAssDistanceService } from './snake-keep-ass-distance/snake-kee
   exports: [SnakeService, SnakeKeepAssDistanceService],
 })
 
-export class SnakeModule {
-  constructor(private readonly snakeService: SnakeService) {
-    setInterval(() => this.snakeService.inactivityCheck(), 10000);
-  }
-}
+export class SnakeModule {}

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { Goodie, Snake } from '../interfaces/common.interface';
+import { Goody, Snake } from '../interfaces/common.interface';
 import { GoodiesService } from '../goodies/goodies.service';
 import { ControlsService } from '../controls/controls.service';
 import { StatsService } from '../stats/stats.service';
 import { UtilsService } from '../utils/utils.service';
 import { GatewayService } from '../gateway/gateway.service';
-import {GameInactiveService} from '../game/game-inactive.service';
+import {GameInactiveService} from '../game/game-inactive/game-inactive.service';
 import {StatsLastActionService} from "../stats/stats-last-action.service";
 
 const snakeStage = {
@@ -42,22 +42,6 @@ export class SnakeService {
   }
 
   /**
-   * Get snake mode
-   */
-  getMode() {
-    return this.snake.mode;
-  }
-
-  /**
-   * Set snake mode
-   *
-   * @param mode
-   */
-  setMode(mode: string) {
-    this.snake.mode = mode;
-  }
-
-  /**
    * Get snake status
    */
   getSnake() {
@@ -65,13 +49,6 @@ export class SnakeService {
     this.snake.direction = this.controlsService.getDirection();
 
     return this.snake;
-  }
-
-  /**
-   * Get snake speed
-   */
-  getSnakeSpeed() {
-    return this.snake.speed
   }
 
   /**
@@ -84,9 +61,39 @@ export class SnakeService {
   }
 
   /**
+   * Get snake mode
+   */
+  getSnakeMode() {
+    return this.snake.mode;
+  }
+
+  /**
+   * Set snake mode
+   *
+   * @param mode
+   */
+  setSnakeMode(mode: string) {
+    this.snake.mode = mode;
+  }
+
+  /**
+   * Get snake speed
+   */
+  getSnakeSpeed() {
+    return this.snake.speed
+  }
+
+  /**
+   * Get snake length
+   */
+  getSnakeLength() {
+    return this.snake.body.length;
+  }
+
+  /**
    * Is snake damaged?
    */
-  public isDamaged() {
+  public isSnakeDamaged() {
     return this.snake.damaged
   }
 
@@ -95,7 +102,7 @@ export class SnakeService {
    *
    * @param toggle
    */
-  public setDamaged(toggle) {
+  public setSnakeDamaged(toggle) {
     this.snake.damaged = toggle;
   }
 
@@ -104,8 +111,8 @@ export class SnakeService {
    *
    * @param item
    */
-  private hasCollision(item) {
-    const head = this.snake.body[this.getLength() - 1];
+  private hasSnakeCollision(item) {
+    const head = this.snake.body[this.getSnakeLength() - 1];
 
     return head[0] === item[0] && head[1] === item[1];
   }
@@ -113,40 +120,40 @@ export class SnakeService {
   /**
    * Process collision
    */
-  private processCollision() {
+  private processSnakeCollision() {
     const goodies = this.goodiesService.getGoodies();
 
     // bonus collision
     let i = 0;
 
-    goodies.forEach((goodie: Goodie) => {
-      if (this.hasCollision(goodie.pos)) {
-        const goodieScore = GoodiesService.getGoodieScore(goodie);
+    goodies.forEach((goody: Goody) => {
+      if (this.hasSnakeCollision(goody.pos)) {
+        const goodieScore = GoodiesService.getGoodyScore(goody);
 
         this.statsService.incrementScore(goodieScore);
         this.statsService.incrementGoodie();
 
         GatewayService.emit('snake-bonus-eaten', {
-          type: goodie.type,
+          type: goody.type,
           score: goodieScore,
         });
 
-        switch (goodie.type) {
+        switch (goody.type) {
           case 0:
             if (UtilsService.randomNumber(0, 4) === 4) {
-              this.goodiesService.addRandomGoodie();
+              this.goodiesService.addRandomGoody();
             } else {
               if (UtilsService.randomNumber(0, 3) === 3) {
-                this.goodiesService.addGoodie();
+                this.goodiesService.addGoody();
               }
 
               if (UtilsService.randomNumber(0, 7) === 7) {
-                this.goodiesService.addGoodie();
+                this.goodiesService.addGoody();
               }
 
               if (UtilsService.randomNumber(0, 15) === 15) {
-                this.goodiesService.addGoodie();
-                this.goodiesService.addGoodie();
+                this.goodiesService.addGoody();
+                this.goodiesService.addGoody();
               }
             }
             break;
@@ -159,20 +166,20 @@ export class SnakeService {
               const randomGoodieDrop = UtilsService.randomNumber(1, 3);
 
               for (let bd = 0; bd < randomGoodieDrop; bd++) {
-                this.goodiesService.addRandomGoodie();
+                this.goodiesService.addRandomGoody();
               }
             }
 
             if (UtilsService.randomNumber(0, 2) === 2) {
-              this.goodiesService.addGoodie();
+              this.goodiesService.addGoody();
             }
 
             if (UtilsService.randomNumber(0, 4) === 4) {
-              this.goodiesService.addGoodie();
+              this.goodiesService.addGoody();
             }
 
             if (UtilsService.randomNumber(0, 5) === 5) {
-              this.goodiesService.addGoodie();
+              this.goodiesService.addGoody();
             }
 
             break;
@@ -230,15 +237,15 @@ export class SnakeService {
 
         // drop 2 random bonus if...
         if (UtilsService.randomNumber(0, 5) === 5) {
-          this.goodiesService.addGoodie();
+          this.goodiesService.addGoody();
 
           if (UtilsService.randomNumber(0, 5) === 3) {
-            this.goodiesService.addRandomGoodie();
+            this.goodiesService.addRandomGoody();
           }
         }
 
         // snake++
-        this.addLength();
+        this.addSnakeLength();
 
         // remove taken bonus
         goodies.splice(i, 1);
@@ -246,7 +253,7 @@ export class SnakeService {
         // no bonus fallback
         const goodiesListCount = Object.keys(goodies).length;
         if (goodiesListCount === 0) {
-          this.goodiesService.addGoodie();
+          this.goodiesService.addGoody();
         }
       }
 
@@ -256,37 +263,19 @@ export class SnakeService {
     // self collision
     for (const k in this.snake.body) {
       if (Number(k) !== this.snake.body.length - 1) {
-        if (this.hasCollision(this.snake.body[k])) {
-          this.removeLength();
+        if (this.hasSnakeCollision(this.snake.body[k])) {
+          this.removeSnakeLength();
           this.snake.damaged = true;
         }
       }
     }
   }
 
-  inactivityCheck() {
-    // after X minutes without a move, it adds 1 bonus
-    if (this.controlsInactivityService.isInactiveMoreThanMinutes(360)) {
-      if (this.goodiesService.getGoodiesCount() < 3) {
-        this.goodiesService.addGoodie(0);
-        this.controlsInactivityService.resetSecondsSinceLastMove();
-      }
-    }
-
-    // after X minutes without a move, it removes 1 length
-    if (this.controlsInactivityService.isInactiveMoreThanMinutes(360)) {
-      if (this.getLength() > 4) {
-        this.removeLength();
-        this.controlsInactivityService.resetSecondsSinceLastMove();
-      }
-    }
-  }
-
   /**
    * Set snake speed based on its length
-   * (danger: embarrassing code; I'm not a mathematician)
+   * [danger] embarrassing code, i'm not a mathematician
    */
-  private recalculateSpeed() {
+  private recalculateSnakeSpeed() {
     this.snake.speed = 500;
 
     if (this.snake.mode !== 'lazy') {
@@ -343,7 +332,7 @@ export class SnakeService {
   /**
    * Increment snake length
    */
-  private addLength() {
+  private addSnakeLength() {
     const snakeTail = this.snake.body[0];
     this.snake.body.unshift([snakeTail[0], snakeTail[1]]);
   }
@@ -353,55 +342,48 @@ export class SnakeService {
    *
    * @param count
    */
-  removeLength(count: number = 1) {
+  removeSnakeLength(count: number = 1) {
     for (let i = 0; i < count; i++) {
       this.snake.body.pop();
     }
 
     // for design purpose
-    if (this.getLength() === 20) {
+    if (this.getSnakeLength() === 20) {
       this.snake.body.pop();
     }
   }
 
-  /**
-   * Return snake length
-   */
-  getLength() {
-    return this.snake.body.length;
-  }
-
   public nextMove() {
-    if (this.getMode() !== 'lazy') {
-      this.doStep();
+    if (this.getSnakeMode() !== 'lazy') {
+      this.doSnakeStep();
     }
 
-    this.processCollision();
+    this.processSnakeCollision();
 
     // calc new speed
-    this.recalculateSpeed();
+    this.recalculateSnakeSpeed();
 
     // send updates
     GatewayService.emit('snake-update', this.getGame());
 
-    this.statsLastActionService.resetLastActions();
+    this.statsLastActionService.resetSnakeLastActions();
   }
 
   /**
    * Do step ahead
    */
-  private doStep() {
-    const length = this.getLength() - 1;
+  private doSnakeStep() {
+    const length = this.getSnakeLength() - 1;
 
     for (let i = 0; i < length; i++) {
-      this.moveBlock(i);
+      this.moveSnakeBlock(i);
     }
 
-    this.moveHead();
+    this.moveSnakeHead();
 
-    // reset damage status at next move
-    if (this.isDamaged() === true) {
-      this.setDamaged(false);
+    // resetSnake damage status at next move
+    if (this.isSnakeDamaged() === true) {
+      this.setSnakeDamaged(false);
     }
   }
 
@@ -410,7 +392,7 @@ export class SnakeService {
    *
    * @param i
    */
-  private moveBlock(i) {
+  private moveSnakeBlock(i) {
     this.snake.body[i][0] = this.snake.body[i + 1][0];
     this.snake.body[i][1] = this.snake.body[i + 1][1];
   }
@@ -418,7 +400,7 @@ export class SnakeService {
   /**
    * Move snake head
    */
-  private moveHead() {
+  private moveSnakeHead() {
     const currentDirection = this.controlsService.getDirection();
 
     const length = this.snake.body.length;
@@ -457,9 +439,9 @@ export class SnakeService {
   }
 
   /**
-   * Reset snake
+   * resetSnake snake
    */
-  reset() {
+  resetSnake() {
     this.snake.body = [];
 
     // put in place snake elements
