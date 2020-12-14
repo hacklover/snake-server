@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GameStorage } from '../../interfaces/storage.interface';
+import { GameStorage } from '../../schemas/storage.schema';
 
 @Injectable()
 export class MongodbService {
   constructor(
-    @InjectModel('GameStorage') private readonly storageModel: Model<GameStorage>,
+    @InjectModel(GameStorage.name) private readonly storageModel: Model<GameStorage>,
   ) {}
 
   /**
