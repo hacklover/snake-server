@@ -13,6 +13,7 @@ export class MongodbService {
    * Load game from storage
    */
   async readGameSave() {
+    // todo fix, it returns null
     return await this.storageModel.findOne().exec();
   }
 
