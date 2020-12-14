@@ -13,7 +13,7 @@ export class MongodbService {
    * Load game from storage
    */
   async readGameSave() {
-    return await this.storageModel.find().exec();
+    return await this.storageModel.findOne().exec();
   }
 
   /**
@@ -21,6 +21,6 @@ export class MongodbService {
    */
   async writeGameSave(game) {
     const gameStorageState = new this.storageModel(game);
-    return gameStorageState.save();
+    await gameStorageState.save();
   }
 }
