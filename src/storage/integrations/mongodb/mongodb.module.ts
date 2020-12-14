@@ -12,7 +12,7 @@ const mongoDatabase = process.env.STORAGE_MONGODB_DATABASE;
 @Module({
   imports: [
     MongooseModule.forRoot(`${mongoProtocol}://${mongoUsername}:${mongoPassword}@${mongoHost}/${mongoDatabase}`),
-    MongooseModule.forFeature([{ name: 'GameStorage', schema: GameStorageSchema, collection: 'name' }])
+    MongooseModule.forFeature([{ name: 'GameStorage', schema: GameStorageSchema, collection: 'game' }])
   ],
   providers: [MongodbService],
   exports: [MongodbService,MongooseModule]
