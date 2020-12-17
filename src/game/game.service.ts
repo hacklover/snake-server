@@ -19,14 +19,24 @@ export class GameService {
     private readonly movesService: MovesService,
     private readonly movesAutomaticService: MovesAutomaticService,
     private readonly statsService: StatsService,
+    private readonly storageService: StorageService,
   ) {}
+
+  static get gameAutosaveInterval(): number {
+    return Number(process.env.GAME_AUTOSAVE_INTERVAL) || 5000
+  }
 
   /**
    * Load previous game state
    */
-  public loadGame() {
+  public async loadGame() {
     // start new game / resume game
-    this.game = StorageService.readGameSave();
+    this.game = await this.storageService.readGameSave();
+
+    if (!this.game) {
+      console.error('Unable to start the game')
+      return false
+    }
 
     // load previous state
     this.snakeService.setSnake(this.game.snake);
@@ -58,6 +68,8 @@ export class GameService {
 
     // snake move auto
     this.movesAutomaticService.resetSnakeSnakeAutoMoveTimeout();
+
+    return true
   }
   /**
    * Save current game state
@@ -66,27 +78,6 @@ export class GameService {
     // refresh this.game status object
     this.game = this.snakeService.getGame();
 
-    StorageService.writeGameSave(this.game);
-  }
-
-  /**
-   * Default game state
-   */
-  static getNewGameDefaultState() {
-    return {
-      snake: {
-        mode: 'default',
-        direction: 'right',
-        speed: 5000,
-        body: [],
-        damaged: false,
-      },
-      goodies: [],
-      stats: {
-        score: 0,
-        goodies: 0,
-        moves: 0
-      }
-    }
+    this.storageService.writeGameSave(this.game);
   }
 }
