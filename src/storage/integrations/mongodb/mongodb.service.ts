@@ -1,27 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GameStorage } from '../../schemas/storage.schema';
+import { GameStorageDocument, GameStorageSchemaName, GameStorageDefaultValues } from '../../schemas/storage.schema';
 
 @Injectable()
 export class MongodbService {
   constructor(
-    @InjectModel(GameStorage.name) private readonly storageModel: Model<GameStorage>,
+    @InjectModel(GameStorageSchemaName) private readonly gameStorageModel: Model<GameStorageDocument>,
   ) {}
+
+  /**
+   * New game mongodb document
+   */
+  async newGameSave() {
+    const gameSaveDocument = new this.gameStorageModel(GameStorageDefaultValues);
+
+    return gameSaveDocument.save()
+  }
 
   /**
    * Load game from storage
    */
   async readGameSave() {
-    // todo fix, it returns null
-    return await this.storageModel.findOne().exec();
+    const gameSaveDocument = await this.gameStorageModel.findOne()
+
+    if (!gameSaveDocument) {
+      return await this.newGameSave()
+    }
+
+    return gameSaveDocument
   }
 
   /**
    * Save game to storage
    */
   async writeGameSave(game) {
-    const gameStorageState = new this.storageModel(game);
-    await gameStorageState.save();
+    await this.gameStorageModel.updateOne({}, game)
   }
 }

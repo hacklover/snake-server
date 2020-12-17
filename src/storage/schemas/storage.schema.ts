@@ -1,12 +1,17 @@
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
+
+// interfaces
 
 export interface GameStorageSnake {
   mode: string;
   direction: string;
   speed: number;
-  body: any[];
+  body: any[][];
   damaged: boolean;
+}
+export interface GameStorageGoody {
+  type: number;
+  pos: number[];
 }
 export interface GameStorageStats {
   score: number;
@@ -14,14 +19,21 @@ export interface GameStorageStats {
   moves: number;
 }
 
-@Schema()
-export class GameStorage extends Document {
-  snake: GameStorageSnake;
-  goodies: any[];
-  stats: GameStorageStats;
-}
+// mongodb schema
+export const GameStorageSchemaName = 'GameStorageDocument';
+export const GameStorageSchema = new mongoose.Schema({
+  snake: { type: Object },
+  goodies: { type: Array },
+  stats: { type: Object }
+})
 
-export const GameStorageSchema = SchemaFactory.createForClass(GameStorage);
+// mongodb document
+export interface GameStorageDocument extends mongoose.Document {
+  readonly _id: mongoose.Schema.Types.ObjectId;
+  readonly snake: GameStorageSnake;
+  readonly goodies: GameStorageGoody[];
+  readonly stats: GameStorageStats;
+}
 
 // default game storage values
 export const GameStorageDefaultValues = {
