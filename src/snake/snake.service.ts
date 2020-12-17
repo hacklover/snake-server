@@ -131,7 +131,7 @@ export class SnakeService {
         const goodieScore = GoodiesService.getGoodyScore(goody);
 
         this.statsService.incrementScore(goodieScore);
-        this.statsService.incrementGoodie();
+        this.statsService.incrementGoody();
 
         GatewayService.emit('snake-bonus-eaten', {
           type: goody.type,

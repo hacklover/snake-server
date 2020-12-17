@@ -25,7 +25,7 @@ export class StatsService {
     this.stats.moves++;
   }
 
-  incrementGoodie() {
+  incrementGoody() {
     this.stats.goodies++;
   }
 }
