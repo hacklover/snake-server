@@ -57,7 +57,7 @@ Build your own snake client using the Server-Sent Events API of this snake insta
 You can use [p5.js](https://p5js.org), [three.js](https://threejs.org) or what you prefer.
 
 ```js
-const URL = 'ttp://localhost:4000/api/sse';
+const URL = 'http://localhost:4000/api/sse';
 
 const snakeEvents = new EventSource(URL);
 
