@@ -1,6 +1,6 @@
 # Web Plays Snake - Server
   
-> Web Plays Snake is a coop sandbox platform based on the snake game.  
+> Web Plays Snake is an experimental multiplayer sandbox platform based on the snake game.  
 
 <img src="https://i.imgur.com/otfovv0.png" />
 
