@@ -5,7 +5,7 @@
 <img src="https://i.imgur.com/otfovv0.png" />
 
 Client source isn't included for now.  
-Build your own! https://snake.hacklover.net
+Build your own! [hacklover-snake-client.netlify.app](https://hacklover-snake-client.netlify.app)
 
 ## Installation
 
@@ -53,7 +53,7 @@ fetch(URL, {
 ```
 
 #### Snake updates API
-Build your own snake client using the Server-Sent Events API of this snake instance!  
+Build your own snake client using the Server-Sent Events API of the snake instance!  
 You can use [p5.js](https://p5js.org), [three.js](https://threejs.org) or what you prefer.
 
 ```js
@@ -76,7 +76,7 @@ snakeEvents.onmessage = function (message) {
 
 ## Test your server
 You have to allow insecure content if you are hosting it without https.  
-https://web-plays-snake.netlify.app/?url=http://localhost:4000
+https://hacklover-snake-client.netlify.app/?url=http://localhost:4000
 
 ## License
 
