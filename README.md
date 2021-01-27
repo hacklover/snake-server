@@ -76,7 +76,7 @@ snakeEvents.onmessage = function (message) {
 
 ## Test your server
 You have to allow insecure content if you are hosting it without https.  
-https://hacklover-snake-client.netlify.app/?url=http://localhost:4000
+https://hacklover-snake-client.netlify.app/?host=http://localhost:4000
 
 ## License
 
