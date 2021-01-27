@@ -1,6 +1,6 @@
 # Web Plays Snake - Server
-  
-> Web Plays Snake is an experimental multiplayer sandbox platform based on the snake game.  
+
+> Web Plays Snake is a simple sandbox platform based on the snake game
 
 <img src="https://i.imgur.com/otfovv0.png" />
 
@@ -53,7 +53,7 @@ fetch(URL, {
 ```
 
 #### Snake updates API
-Build your own snake client using the Server-Sent Events API of the snake instance!  
+Create your own client using the Server-Sent Events API of your snake instance!  
 You can use [p5.js](https://p5js.org), [three.js](https://threejs.org) or what you prefer.
 
 ```js
