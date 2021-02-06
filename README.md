@@ -36,9 +36,9 @@ You can send directions making an HTTP POST request to the target URL using thes
 const URL = 'http://localhost:4000/api/input';
 
 fetch(URL, {
-    header: {
-      'Content-Type': 'application/json'
-    },
+    headers: new Headers({
+      'content-type': 'application/json'
+    }),
     body: JSON.stringify({
       direction: 'up'
     }),
