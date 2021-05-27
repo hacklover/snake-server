@@ -5,7 +5,7 @@
 <img src="https://i.imgur.com/otfovv0.png" />
 
 Client source isn't included for now.  
-Build your own! [hacklover-snake-client.netlify.app](https://hacklover-snake-client.netlify.app)
+Build your own! [snake.hacklover.net](https://hacklover-snake-client.netlify.app)
 
 ## Installation
 
@@ -76,7 +76,7 @@ snakeEvents.onmessage = function (message) {
 
 ## Test your server
 You have to allow insecure content if you are hosting it without https.  
-https://hacklover-snake-client.netlify.app/?host=http://localhost:4000
+[https://snake.hacklover.net/?host=http://localhost:4000](https://hacklover-snake-client.netlify.app/?host=http://localhost:4000)
 
 ## License
 
