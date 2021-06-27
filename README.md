@@ -53,7 +53,7 @@ fetch(URL, {
 ```
 
 #### Snake updates API
-Create your own client using the Server-Sent Events API of your snake instance!  
+Create your own client using the Server-Sent Events API of your snake instance.  
 You can use [p5.js](https://p5js.org), [three.js](https://threejs.org) or what you prefer.
 
 ```js
@@ -74,9 +74,9 @@ snakeEvents.onmessage = function (message) {
 };
 ```
 
-## Test your server
-You have to allow insecure content if you are hosting it without https.  
-[https://snake.hacklover.net/?host=http://localhost:4000](https://hacklover-snake-client.netlify.app/?host=http://localhost:4000)
+## Test your server 
+Once your server is started, visit [https://snake.hacklover.net/?host=http://localhost:4000](https://hacklover-snake-client.netlify.app/?host=http://localhost:4000).  
+You should allow insecure content, if you are hosting snake-server not under HTTPS.
 
 ## License
 
